@@ -1,10 +1,12 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -18,6 +20,17 @@ kotlin {
 
     jvm("desktop")
 
+    js(IR) {
+        moduleName = "KMPE-commerce"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "KMPEcommerce.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).copy()
+            }
+            binaries.executable()
+        }
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -26,6 +39,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(libs.decompose)
+            export("com.arkivanov.essenty:lifecycle:1.3.0")
         }
     }
 
@@ -35,11 +50,22 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+
+            // Decompose
+            implementation(libs.decompose)
+            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
         }
         commonMain.dependencies {
+
+            // Decompose
+            implementation(libs.decompose)
+            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
+
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.materialIconsExtended)
             implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
@@ -47,6 +73,16 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+
+        iosMain.dependencies {
+
+            api(libs.decompose)
+            api(libs.essenty.lifecycle)
+        }
+
+        jsMain.dependencies {
+            
         }
     }
 }
@@ -95,4 +131,11 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.experimental {
+    web.application {}
+}
+
+dependencies {
 }

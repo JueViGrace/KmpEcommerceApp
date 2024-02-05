@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -20,6 +19,8 @@ kotlin {
     iosSimulatorArm64()
 
     jvm()
+
+    js()
 
     sourceSets {
         androidMain.dependencies {
@@ -79,6 +80,10 @@ kotlin {
 
         jvmMain.dependencies {
         }
+
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
     }
 }
 
@@ -99,4 +104,8 @@ android {
             targetCompatibility = JavaVersion.VERSION_17
         }
     }
+}
+
+dependencies {
+    implementation(libs.ktor.client.okhttp)
 }
