@@ -39,8 +39,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            export(libs.decompose)
-            export("com.arkivanov.essenty:lifecycle:1.3.0")
         }
     }
 
@@ -50,16 +48,27 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-
-            // Decompose
-            implementation(libs.decompose)
-            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
         }
-        commonMain.dependencies {
 
-            // Decompose
-            implementation(libs.decompose)
-            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
+        commonMain.dependencies {
+            // Voyager
+            // Navigator
+            implementation(libs.voyager.navigator)
+
+            // Screen Model
+            implementation(libs.voyager.screenmodel)
+
+            // BottomSheetNavigator
+            implementation(libs.voyager.bottom.sheet.navigator)
+
+            // TabNavigator
+            implementation(libs.voyager.tab.navigator)
+
+            // Transitions
+            implementation(libs.voyager.transitions)
+
+            // Koin integration
+            implementation(libs.voyager.koin)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -71,14 +80,13 @@ kotlin {
             implementation(compose.components.resources)
             implementation(projects.shared)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
 
         iosMain.dependencies {
 
-            api(libs.decompose)
-            api(libs.essenty.lifecycle)
         }
 
         jsMain.dependencies {
@@ -135,7 +143,4 @@ compose.desktop {
 
 compose.experimental {
     web.application {}
-}
-
-dependencies {
 }

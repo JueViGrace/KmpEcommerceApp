@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqldelight)
 }
@@ -24,22 +25,40 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
+
             // Ktor
             implementation(libs.ktor.client.android)
 
             // Sqldelight
             implementation(libs.sqldelight.android.driver)
 
-            // Decompose
-            implementation(libs.decompose)
-            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
-
             // Koin
             implementation(libs.koin.android)
         }
 
         commonMain.dependencies {
-            // put your Multiplatform dependencies here
+
+            // Voyager
+            // Navigator
+            implementation(libs.voyager.navigator)
+
+            // Screen Model
+            implementation(libs.voyager.screenmodel)
+
+            // BottomSheetNavigator
+            implementation(libs.voyager.bottom.sheet.navigator)
+
+            // TabNavigator
+            implementation(libs.voyager.tab.navigator)
+
+            // Transitions
+            implementation(libs.voyager.transitions)
+
+            // Koin integration
+            implementation(libs.voyager.koin)
+
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
 
@@ -61,24 +80,28 @@ kotlin {
             /*// Compose Image Loader
             api(libs.image.loader)*/
 
-            // Decompose
-            implementation(libs.decompose)
-            implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.2.2-compose-experimental")
-
             // Koin
             implementation(libs.koin.core)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.compose)
+
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.ui)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.components.resources)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
             implementation(libs.sqldelight.native.driver)
-            api(libs.decompose)
-            api(libs.essenty.lifecycle)
         }
 
         jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
         }
 
         jsMain.dependencies {
