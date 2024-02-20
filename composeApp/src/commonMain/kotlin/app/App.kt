@@ -1,8 +1,9 @@
 package app
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
+import androidx.compose.ui.Modifier
 import core.presentation.KmpEcommeceTheme
 
 @Composable
@@ -14,12 +15,10 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor
     ) {
-        Navigator(
-            screen = AppScreen(
-//                initialScreen =
-            )
-        ) { navigator ->
-            SlideTransition(navigator = navigator)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            MainApp()
         }
     }
 }

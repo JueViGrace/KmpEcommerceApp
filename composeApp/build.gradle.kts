@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -51,25 +50,6 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Voyager
-            // Navigator
-            implementation(libs.voyager.navigator)
-
-            // Screen Model
-            implementation(libs.voyager.screenmodel)
-
-            // BottomSheetNavigator
-            implementation(libs.voyager.bottom.sheet.navigator)
-
-            // TabNavigator
-            implementation(libs.voyager.tab.navigator)
-
-            // Transitions
-            implementation(libs.voyager.transitions)
-
-            // Koin integration
-            implementation(libs.voyager.koin)
-
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.materialIconsExtended)
@@ -86,11 +66,9 @@ kotlin {
         }
 
         iosMain.dependencies {
-
         }
 
         jsMain.dependencies {
-            
         }
     }
 }

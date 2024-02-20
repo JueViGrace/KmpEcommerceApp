@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -21,7 +23,16 @@ kotlin {
 
     jvm()
 
-    js()
+    js(IR) {
+        moduleName = "KMPE-commerce"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "KMPEcommerce.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).copy()
+            }
+            binaries.executable()
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {
@@ -77,8 +88,8 @@ kotlin {
             implementation(libs.moko.mvvm.flow)
             implementation(libs.moko.mvvm.flow.compose)
 
-            /*// Compose Image Loader
-            api(libs.image.loader)*/
+            // Compose Image Loader
+            api(libs.image.loader)
 
             // Koin
             implementation(libs.koin.core)
@@ -120,6 +131,11 @@ sqldelight {
 android {
     namespace = "org.jvg.ecommercekmp.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         compileOptions {

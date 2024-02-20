@@ -1,26 +1,37 @@
 package home.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.TabDisposable
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import core.common.bottomList
+import core.presentation.components.BottomBarComponent
 
-class HomeScreen : Screen {
+object HomeScreen : Screen {
+    override val key: ScreenKey = uniqueScreenKey
+
     @Composable
     override fun Content() {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Home screen"
-            )
+        TabNavigator(
+            tab = DashboardTab,
+            tabDisposable = { tabNavigator ->
+                TabDisposable(
+                    navigator = tabNavigator,
+                    tabs = bottomList
+                )
+            }
+        ) { tabNavigator ->
 
+            Scaffold(
+                bottomBar = {
+                    BottomBarComponent(tabNavigator)
+                },
+                content = { CurrentTab() }
+            )
         }
     }
 }
