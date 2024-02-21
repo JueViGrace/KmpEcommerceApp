@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinx.serialization)
-    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -24,12 +23,7 @@ kotlin {
     jvm()
 
     js(IR) {
-        moduleName = "KMPE-commerce"
         browser {
-            commonWebpackConfig {
-                outputFileName = "KMPEcommerce.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).copy()
-            }
             binaries.executable()
         }
     }
@@ -41,9 +35,6 @@ kotlin {
 
             // Ktor
             implementation(libs.ktor.client.android)
-
-            // Sqldelight
-            implementation(libs.sqldelight.android.driver)
 
             // Koin
             implementation(libs.koin.android)
@@ -79,9 +70,6 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
 
-            // SQLDelight
-            implementation(libs.sqldelight.runtime)
-
             // Moko MVVM
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
@@ -108,7 +96,6 @@ kotlin {
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.sqldelight.native.driver)
         }
 
         jvmMain.dependencies {
@@ -118,13 +105,6 @@ kotlin {
         jsMain.dependencies {
             implementation(libs.ktor.client.js)
         }
-    }
-}
-
-sqldelight {
-    database("KmpECommerceDatabase") {
-        packageName = "com.jvg.ecommercekmp.database"
-        sourceFolders = listOf("sqldelight")
     }
 }
 
